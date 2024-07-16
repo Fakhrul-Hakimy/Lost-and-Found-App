@@ -23,7 +23,11 @@ if (!isset($_SESSION['username'])) {
     <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
     <!-- Rest of the main page content -->
 
-    <ion-button color="primary">Add New Item</ion-button><br>
+    <ion-button color="primary">
+        <a href="addnewitem.php" style="text-decoration: none; color: inherit;">
+            Add Item
+        </a>
+    </ion-button>
     <ion-button>Delete Item</ion-button><br>
     <ion-button color="warning">Update Item List</ion-button><br>
     <ion-button color="secondary">Search Item</ion-button><br>
