@@ -1,4 +1,5 @@
 <?php
+session_start(); // Start the session at the beginning of the script
 
 $servername = "localhost";
 $username = "username";
@@ -16,7 +17,7 @@ echo "Connected successfully<br>";
 
 // Assuming you've sanitized and validated $_POST['username'] and $_POST['password']
 $username = $conn->real_escape_string($_POST['username']);
-$password = $conn->real_escape_string($_POST['password']);
+$password = $_POST['password']; // No need to escape password for hashing
 
 // Construct SQL query with proper column selection and variable substitution
 $sql = "SELECT * FROM users WHERE username = '$username'";
@@ -29,9 +30,14 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     
     // Verify the password using password_verify() if you're using hashed passwords
-    // Example assuming password stored as plaintext (not recommended)
-    if ($row['password'] == $password) {
-        // Password matches, redirect to main.php
+    if (password_verify($password, $row['password'])) {
+        // Password matches, store username in session
+        $_SESSION['username'] = $username;
+        
+        // Regenerate session ID to prevent session fixation attacks
+        session_regenerate_id(true);
+        
+        // Redirect to main.php
         header("Location: http://localhost/site/main.php");
         exit(); // Ensure that subsequent code is not executed
     } else {
@@ -43,5 +49,4 @@ if ($result->num_rows > 0) {
 
 // Close connection
 $conn->close();
-
 ?>
