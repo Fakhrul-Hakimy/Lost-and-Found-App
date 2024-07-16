@@ -2,18 +2,19 @@
 session_start(); // Start the session at the beginning of the script
 
 $servername = "localhost";
-$username = "username";
-$password = "password";
-$dbname = "dbname";
+$db_username = "root"; // Database username
+$db_password = "admin"; // Database password
+$dbname = "LostFound";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
+} else {
+    echo "Connected successfully<br>";
 }
-echo "Connected successfully<br>";
 
 // Assuming you've sanitized and validated $_POST['username'] and $_POST['password']
 $username = $conn->real_escape_string($_POST['username']);
@@ -40,10 +41,10 @@ if ($result->num_rows > 0) {
         // Redirect to main.php
         echo "<script>alert('Login successful'); window.location.href = 'main.php';</script>";
     } else {
-        echo "Incorrect password";
+        echo "<script>alert('Incorrect Password'); window.location.href = 'index.html';</script>";
     }
 } else {
-    echo "User not found";
+    echo "<script>alert('User not found. Please Register'); window.location.href = 'index.html';</script>";
 }
 
 // Close connection
