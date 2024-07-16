@@ -28,7 +28,7 @@
 
                         <ion-input label="Username" label-placement="floating" fill="outline" placeholder="Enter Username" type="text" name="username" id="username" required></ion-input>
 
-                        <ion-button expand="block" type="submit">Register</ion-button>
+                        <ion-button expand="block" type="submit">Reset Password</ion-button>
                     </form> 
                 </ion-card-content>
             </ion-card>

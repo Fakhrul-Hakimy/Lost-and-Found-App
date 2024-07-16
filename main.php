@@ -68,19 +68,19 @@ if (!isset($_SESSION['username'])) {
             <ion-button color="primary">
                 <a href="addnewitem.php">Add Item</a>
             </ion-button>
-            <ion-button color="danger">
+            <ion-button color="primary">
                 <a href="deleteitem.php">Delete Item</a>
             </ion-button>
-            <ion-button color="warning">
+            <ion-button color="primary">
                 <a href="updateitemlist.php">Update Item List</a>
             </ion-button>
-            <ion-button color="secondary">
+            <ion-button color="primary">
                 <a href="searchitem.php">Search Item</a>
             </ion-button>
-            <ion-button color="tertiary">
+            <ion-button color="primary">
                 <a href="viewitemlist.php">View Item List</a>
             </ion-button>
-            <ion-button color="success">
+            <ion-button color="primary">
                 <a href="changepass.php">Change Password</a>
             </ion-button>
         </div>
