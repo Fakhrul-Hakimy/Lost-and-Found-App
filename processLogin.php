@@ -38,8 +38,7 @@ if ($result->num_rows > 0) {
         session_regenerate_id(true);
         
         // Redirect to main.php
-        header("Location: http://localhost/site/main.php");
-        exit(); // Ensure that subsequent code is not executed
+        echo "<script>alert('Login successful'); window.location.href = 'main.php';</script>";
     } else {
         echo "Incorrect password";
     }

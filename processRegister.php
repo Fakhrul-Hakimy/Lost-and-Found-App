@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 
 // Check if any of the fields are empty
 if (empty($_POST['Email']) || empty($_POST['username']) || empty($_POST['password'])) {
-    echo "<script>alert('Error: All fields are required.'); window.location.href = 'registration_page.php';</script>";
+    echo "<script>alert('Error: All fields are required.'); window.location.href = 'register.html';</script>";
     exit();
 }
 
@@ -34,9 +34,9 @@ $stmt->bind_param("sss", $email, $username, $hashed_password);
 
 // Execute the query
 if ($stmt->execute()) {
-    echo "<script>alert('Registration successful'); window.location.href = 'login_page.php';</script>";
+    echo "<script>alert('Registration successful'); window.location.href = 'index.html';</script>";
 } else {
-    echo "<script>alert('Error: " . $stmt->error . "'); window.location.href = 'registration_page.php';</script>";
+    echo "<script>alert('Error: " . $stmt->error . "'); window.location.href = 'register.html';</script>";
 }
 
 // Close statement and connection
