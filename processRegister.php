@@ -11,15 +11,12 @@ $conn = new mysqli($servername, $db_username, $db_password, $dbname);
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-} else {
-    echo "Connected successfully<br>";
 }
 
 // Check if any of the fields are empty
 if (empty($_POST['Email']) || empty($_POST['username']) || empty($_POST['password'])) {
-    die("Error: All fields are required.");
-    echo "<script>alert('Error: All fields are required.'); window.location.href = 'register.html';</script>";
-    exit(); // Ensure that subsequent code is not executed
+    echo "<script>alert('Error: All fields are required.'); window.location.href = 'registration_page.php';</script>";
+    exit();
 }
 
 // Sanitize and validate input
@@ -37,9 +34,9 @@ $stmt->bind_param("sss", $email, $username, $hashed_password);
 
 // Execute the query
 if ($stmt->execute()) {
-    echo "Registration successful";
+    echo "<script>alert('Registration successful'); window.location.href = 'login_page.php';</script>";
 } else {
-    echo "Error: " . $stmt->error;
+    echo "<script>alert('Error: " . $stmt->error . "'); window.location.href = 'registration_page.php';</script>";
 }
 
 // Close statement and connection
