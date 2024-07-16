@@ -53,15 +53,15 @@ if ($result->num_rows > 0) {
         if ($update_stmt->execute()) {
             echo "<script>alert('Password Reset Successful.'); window.location.href = 'main.php';</script>";
         } else {
-            echo "<script>alert('Error updating password.'); window.location.href = 'index.html';</script>";
+            echo "<script>alert('Error updating password.'); window.location.href = 'main.php';</script>";
         }
 
         $update_stmt->close();
     } else {
-        echo "<script>alert('Incorrect Password'); window.location.href = 'index.html';</script>";
+        echo "<script>alert('Incorrect Password'); window.location.href = 'main.php';</script>";
     }
 } else {
-    echo "<script>alert('User not found. Please Register'); window.location.href = 'index.html';</script>";
+    echo "<script>alert('User not found. Please Register'); window.location.href = 'main.php';</script>";
 }
 
 $stmt->close();

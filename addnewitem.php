@@ -8,10 +8,13 @@ if (!isset($_SESSION['username'])) {
 }
 ?>
 
+<!DOCTYPE html>
 <html>
 
 <head>
     <title>Add Item</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
 
     <style>
@@ -26,7 +29,7 @@ if (!isset($_SESSION['username'])) {
 
         ion-card {
             width: 100%;
-            max-width: 500px; /* Adjust the maximum width of the card as needed */
+            max-width: 500px;
             text-align: center;
             margin-left: auto;
             margin-right: auto;
@@ -74,13 +77,11 @@ if (!isset($_SESSION['username'])) {
 
                 <ion-card-content>
                     <div class="greeting">Please Fill in All Item Details</div>
-                    <form action="processItem.php" method="POST">
+                    <form action="processItem.php" method="POST" enctype="multipart/form-data">
 
-                        <ion-input label="Item Name" label-placement="floating" fill="outline"
-                            placeholder="Enter Item Name" type="text" name="ItemName" id="ItemName"
-                            required></ion-input>
+                        <ion-input label="Item Name" label-placement="floating" fill="outline" placeholder="Enter Item Name" type="text" name="ItemName" id="ItemName" required></ion-input>
 
-                            <ion-list>
+                        <ion-list>
                             <ion-item>
                                 <ion-select aria-label="Category" placeholder="Select Category" name="Category">
                                     <ion-select-option value="Electronics">Electronics</ion-select-option>
@@ -97,24 +98,24 @@ if (!isset($_SESSION['username'])) {
                             </ion-item>
                         </ion-list>
 
-             
-
-                        <ion-input label="Description" label-placement="floating" fill="outline"
-                            placeholder="Enter Description" type="text" name="Description" id="Description"
-                            required></ion-input>
+                        <ion-input label="Description" label-placement="floating" fill="outline" placeholder="Enter Description" type="text" name="Description" id="Description" required></ion-input>
 
                         <ion-datetime label="Date Found" label-placement="floating" name="date" id="date" required></ion-datetime>
 
-                        <ion-input label="Finder's Name" label-placement="floating" fill="outline"
-                            placeholder="Enter Finder's Name" type="text" name="FName" id="FName"
-                            required></ion-input>
+                        <ion-input label="Finder's Name" label-placement="floating" fill="outline" placeholder="Enter Finder's Name" type="text" name="FName" id="FName" required></ion-input>
 
-                        <ion-input label="Finder's Contact" label-placement="floating" fill="outline"
-                            placeholder="Enter Contact Number" type="text" name="Fnumber" id="Fnumber"
-                            required></ion-input>
+                        <ion-input label="Finder's Contact" label-placement="floating" fill="outline" placeholder="Enter Contact Number" type="text" name="Fnumber" id="Fnumber" required></ion-input>
 
                         <br>
-                        <input type="file" accept="image/*;capture=camera">
+                        <h1>Camera Capture Example</h1>
+                        <video id="video" width="320" height="240" autoplay></video>
+                        <ion-button id="startButton">Start Camera</ion-button>
+                        <ion-button id="captureButton">Capture Image</ion-button>
+                        <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+                        <img id="capturedImage" style="display:none;"/>
+
+                        <input type="hidden" name="capturedImageData" id="capturedImageData"/>
+
                         <br>
                         <ion-button type="submit">Submit</ion-button>
                     </form>
@@ -126,7 +127,38 @@ if (!isset($_SESSION['username'])) {
     <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-   
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const startButton = document.getElementById('startButton');
+        const captureButton = document.getElementById('captureButton');
+        const capturedImage = document.getElementById('capturedImage');
+        const capturedImageData = document.getElementById('capturedImageData');
+
+        // Start the camera with back camera
+        startButton.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { exact: 'environment' } }
+                });
+                video.srcObject = stream;
+            } catch (err) {
+                alert('Error accessing the camera: ' + err.message);
+                console.error('Error accessing the camera:', err);
+            }
+        });
+
+        // Capture an image
+        captureButton.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/png');
+            capturedImage.src = imageData;
+            capturedImage.style.display = 'block';
+            capturedImageData.value = imageData;
+        });
+    </script>
 
 </body>
 

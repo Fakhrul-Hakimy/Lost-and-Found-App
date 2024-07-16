@@ -1,53 +1,63 @@
 <?php
 session_start();
-include 'db_connection.php'; // Include your database connection file
 
+$servername = "localhost";
+$db_username = "root"; // Database username
+$db_password = "admin"; // Database password
+$dbname = "LostFound";
+
+// Create connection
+$conn = new mysqli($servername, $db_username, $db_password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Check if the user is logged in by checking the session variable
 if (!isset($_SESSION['username'])) {
-    echo "<script>alert('No session Found. Please login first.'); window.location.href = 'index.html';</script>";
+    echo "No session found. Please log in first.";
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// Check if form data is received
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $itemName = $_POST['ItemName'];
     $category = $_POST['Category'];
     $description = $_POST['Description'];
     $dateFound = $_POST['date'];
-    $findersName = $_POST['FName'];
-    $findersContact = $_POST['Fnumber'];
+    $finderName = $_POST['FName'];
+    $finderContact = $_POST['Fnumber'];
+    $capturedImageData = $_POST['capturedImageData'];
 
-    // File upload handling
-    if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-        $fileTmpPath = $_FILES['file']['tmp_name'];
-        $fileName = $_FILES['file']['name'];
-        $fileSize = $_FILES['file']['size'];
-        $fileType = $_FILES['file']['type'];
-        $fileNameCmps = explode(".", $fileName);
-        $fileExtension = strtolower(end($fileNameCmps));
+    // Decode the base64 image data
+    $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $capturedImageData));
+    $imageName = 'uploads/' . uniqid() . '.png';
 
-        $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
-        $uploadFileDir = './upload_files/';
-        $dest_path = $uploadFileDir . $newFileName;
+    // Ensure the uploads directory exists
+    if (!is_dir('uploads')) {
+        mkdir('uploads', 0777, true);
+    }
 
-        if (move_uploaded_file($fileTmpPath, $dest_path)) {
-            $fileUploaded = true;
+    // Save the image to the server
+    if (file_put_contents($imageName, $imageData) !== false) {
+        // Prepare the SQL statement to save item details and image path to the database
+        $stmt = $conn->prepare("INSERT INTO items (name, category, description, date_found, finder_name, finder_contact, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        if ($stmt) {
+            $stmt->bind_param("sssssss", $itemName, $category, $description, $dateFound, $finderName, $finderContact, $imageName);
+            $stmt->execute();
+            $stmt->close();
+            echo "<script>alert('Item added'); window.location.href = 'main.php';</script>";
         } else {
-            $fileUploaded = false;
+            
+            echo "<script>alert('Failed to prepare the SQL statement.'); window.location.href = 'main.php';</script>";
         }
-    }
-
-    // Database insertion
-    $conn = OpenCon(); // Open database connection
-
-    $stmt = $conn->prepare("INSERT INTO items (item_name, category, description, date_found, finders_name, finders_contact, file_name, file_path, file_type, file_size) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssssi", $itemName, $category, $description, $dateFound, $findersName, $findersContact, $fileName, $dest_path, $fileType, $fileSize);
-
-    if ($stmt->execute()) {
-        echo "<script>alert('Item added successfully'); window.location.href = 'addItem.html';</script>";
     } else {
-        echo "<script>alert('Error adding item'); window.location.href = 'addItem.html';</script>";
+        echo "<script>alert('Failed to save images'); window.location.href = 'main.php';</script>";
     }
-
-    $stmt->close();
-    CloseCon($conn); // Close database connection
+} else {
+    echo "<script>alert('Invalid Request'); window.location.href = 'main.php';</script>";
 }
+
+$conn->close();
 ?>
