@@ -74,7 +74,7 @@ if (!isset($_SESSION['username'])) {
 
                 <ion-card-content>
                     <div class="greeting">Please Fill in All Item Details</div>
-                    <form action="processRegister.php" method="POST">
+                    <form action="processItem.php" method="POST">
 
                         <ion-input label="Item Name" label-placement="floating" fill="outline"
                             placeholder="Enter Item Name" type="text" name="ItemName" id="ItemName"
@@ -113,15 +113,10 @@ if (!isset($_SESSION['username'])) {
                             placeholder="Enter Contact Number" type="text" name="Fnumber" id="Fnumber"
                             required></ion-input>
 
-                  <br>
-                            <ion-fab-button (click)="addPhotoToGallery()">
-                                <ion-icon name="camera"></ion-icon>
-                            </ion-fab-button>
-               
-
-                      
-                            <br>
-                            <ion-button type="submit">Submit</ion-button>
+                        <br>
+                        <input type="file" accept="image/*;capture=camera">
+                        <br>
+                        <ion-button type="submit">Submit</ion-button>
                     </form>
                 </ion-card-content>
             </ion-card>
@@ -131,6 +126,7 @@ if (!isset($_SESSION['username'])) {
     <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   
 
 </body>
 
