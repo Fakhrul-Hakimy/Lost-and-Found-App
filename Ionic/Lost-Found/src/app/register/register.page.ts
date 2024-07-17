@@ -36,7 +36,7 @@ export class RegisterPage {
       username: this.username,
       password: this.password
     };
-
+    
     try {
       const response = await this.http.post<any>('http://localhost/processRegister.php', loginData).toPromise();
       if (response.success) {
