@@ -38,8 +38,12 @@ export class HomePage {
     try {
       const response = await this.http.post<any>('http://localhost/processLogin.php', loginData).toPromise();
       if (response.success) {
+        // Save username and email in localStorage
+        localStorage.setItem('username', response.data.username);
+        localStorage.setItem('email', response.data.email);
+
         this.presentToast('Login successful', 'success');
-        this.navCtrl.navigateForward('/home');
+        this.navCtrl.navigateForward('/main-page');
       } else {
         this.presentToast(response.message, 'danger');
       }
@@ -58,5 +62,19 @@ export class HomePage {
       position: 'top'
     });
     toast.present();
+  }
+
+  // Method to check if the user is logged in
+  isLoggedIn(): boolean {
+    const username = localStorage.getItem('username');
+    const email = localStorage.getItem('email');
+    return username !== null && email !== null;
+  }
+
+  // Method to logout
+  logout() {
+    localStorage.removeItem('username');
+    localStorage.removeItem('email');
+    this.navCtrl.navigateRoot('/login');
   }
 }

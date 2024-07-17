@@ -49,7 +49,15 @@ if ($result->num_rows > 0) {
 
     // Check if the provided password matches the stored hashed password
     if (password_verify($password, $user['password'])) {
-        echo json_encode(["success" => true, "message" => "Login successful"]);
+        // Return success with username and email
+        echo json_encode([
+            "success" => true,
+            "message" => "Login successful",
+            "data" => [
+                "username" => $user['username'],
+                "email" => $user['email']
+            ]
+        ]);
     } else {
         echo json_encode(["success" => false, "message" => "Invalid username or password"]);
     }

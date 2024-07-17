@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { HomePage } from './home/home.page';
 import { RegisterPage } from './register/register.page';
 import { ResetPage } from './resetpass/resetpass.page';
+import { MainPage } from './main-page/main-page.page';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,6 @@ export const routes: Routes = [
   },
   {
     path: 'main-page',
-    loadComponent: () => import('./main-page/main-page.page').then( m => m.MainPagePage)
+    loadComponent: () => import('./main-page/main-page.page').then( m => m.MainPage)
   },
 ];

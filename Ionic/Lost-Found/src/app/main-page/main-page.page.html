@@ -10,4 +10,21 @@
       <ion-title size="large">MainPage</ion-title>
     </ion-toolbar>
   </ion-header>
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Lost and Found System</ion-card-title>
+      <ion-card-subtitle>Main Menu</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-button expand="full" [routerLink]="['/register']">Add Item</ion-button>
+      <ion-button expand="full" [routerLink]="['/register']">Delete Item</ion-button>
+      <ion-button expand="full" [routerLink]="['/register']">Update Item</ion-button>
+      <ion-button expand="full" [routerLink]="['/register']">Search Item</ion-button>
+      <ion-button expand="full" [routerLink]="['/register']">List Item</ion-button>
+      <ion-button expand="full" [routerLink]="['/register']">Change Password</ion-button>
+      <ion-button expand="full" (click)="logout()">Log Out</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
