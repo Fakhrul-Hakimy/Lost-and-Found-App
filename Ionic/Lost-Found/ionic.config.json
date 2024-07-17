@@ -1,0 +1,7 @@
+{
+  "name": "Lost-Found",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

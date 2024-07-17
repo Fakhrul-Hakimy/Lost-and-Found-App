@@ -1,69 +1,71 @@
 <?php
-session_start(); // Start the session at the beginning of the script
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit;
+}
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $servername = "localhost";
-$db_username = "root"; // Database username
-$db_password = "admin"; // Database password
+$db_username = "root";
+$db_password = "admin";
 $dbname = "LostFound";
 
-// Create connection
 $conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} else {
-    echo "Connected successfully<br>";
+    echo json_encode(["success" => false, "message" => "Connection failed: " . $conn->connect_error]);
+    exit;
 }
 
-// Check if POST variables are set
-if (isset($_POST['username']) && isset($_POST['Email']) && !empty($_POST['username']) && !empty($_POST['Email'])) {
-    // Sanitize and validate input
-    $username = $conn->real_escape_string($_POST['username']);
-    $email = $conn->real_escape_string($_POST['Email']);
+$data = json_decode(file_get_contents('php://input'), true);
 
-    // Construct SQL query using prepared statements for security
-    $sql = "SELECT * FROM users WHERE username = ? AND email = ?";
+if (json_last_error() !== JSON_ERROR_NONE) {
+    echo json_encode(["success" => false, "message" => "Invalid JSON input"]);
+    exit;
+}
+
+if (!isset($data['email']) || !isset($data['username'])) {
+    echo json_encode(["success" => false, "message" => "All fields are required"]);
+    exit;
+}
+
+$email = $conn->real_escape_string($data['email']);
+$username = $conn->real_escape_string($data['username']);
+
+$sql = "SELECT * FROM users WHERE username = ? AND email = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $username, $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $resetpass = generateRandomSixDigitNumber();
+    $hashed_password = password_hash($resetpass, PASSWORD_BCRYPT);
+
+    $sql = "UPDATE users SET password = ? WHERE username = ? AND email = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $email);
+    $stmt->bind_param("sss", $hashed_password, $username, $email);
 
-    // Perform query
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $resetpass = generateRandomSixDigitNumber();
-
-        // Hash the password before storing it
-        $hashed_password = password_hash($resetpass, PASSWORD_BCRYPT);
-
-        // Update the user's password
-        $sql = "UPDATE users SET password = ? WHERE username = ? AND email = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $hashed_password, $username, $email);
-
-        // Perform query
-        if ($stmt->execute()) {
-            sendTacEmail($email, $resetpass, $username);
-            echo "<script>alert('Password Reset Successful. Please Check your Email.'); window.location.href = 'index.html';</script>";
-        } else {
-            echo "<script>alert('Error updating password.'); window.location.href = 'forgetpass.php';</script>";
-        }
+    if ($stmt->execute()) {
+        sendTacEmail($email, $resetpass, $username);
+        
     } else {
-        // No user found with matching username and email
-        echo "<script>alert('No user found.'); window.location.href = 'forgetpass.php';</script>";
+        echo json_encode(["success" => false, "message" => "Error updating password"]);
     }
-
-    // Close statement
-    $stmt->close();
 } else {
-    echo "<script>alert('Please fill all details.'); window.location.href = 'forgetpass.php';</script>";
+    echo json_encode(["success" => false, "message" => "No user with that username and email"]);
 }
 
-// Close connection
+$stmt->close();
 $conn->close();
 
-// Functions
 function generateRandomSixDigitNumber() {
     return mt_rand(100000, 999999);
 }
@@ -73,28 +75,27 @@ function sendTacEmail($email, $resetpass, $username) {
     require 'C:/xampp/htdocs/site/PHPMailer-6.9.1/src/PHPMailer.php';
     require 'C:/xampp/htdocs/site/PHPMailer-6.9.1/src/SMTP.php';
 
-    $mail = new PHPMailer\PHPMailer\PHPMailer(true); // Use PHPMailer namespace
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
     try {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
         $mail->SMTPAuth = true;
         $mail->Username = 'fakhrulhakimy93@gmail.com';
-        $mail->Password = 'jcouifynxpmymcuw'; // Use your generated App Password here
-        $mail->SMTPSecure = 'tls'; // Enable TLS encryption, `ssl` also accepted
+        $mail->Password = 'jcouifynxpmymcuw';
+        $mail->SMTPSecure = 'tls';
 
-        // Set email details (from, to, subject, message, etc.)
         $mail->setFrom('fakhrulhakimy93@gmail.com', 'Fakhrul');
         $mail->addAddress($email, $username);
 
         $mail->isHTML(true);
         $mail->Subject = 'Your Temp Password';
-        $mail->Body    = "Hello $username,<br><br>Your Temp Pass is: <b>$resetpass</b><br><br>Please use this Password to Login to System and Reset the pass Fast as Possible.";
+        $mail->Body = "Hello $username,<br><br>Your Temp Pass is: <b>$resetpass</b><br><br>Please use this password to log in and reset your password as soon as possible.";
 
         $mail->send();
-        echo 'TAC code has been sent to your email.';
+        echo json_encode(["success" => true, "message" => "New Password has been sent to your email."]);
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        echo json_encode(["success" => false, "message" => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
     }
 }
 ?>

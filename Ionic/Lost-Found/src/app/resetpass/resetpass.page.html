@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Reset Pass
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Reset Pass</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Reset Pass</ion-card-title>
+      <ion-card-subtitle>Please Insert your details to Reset Pass</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-input [(ngModel)]="username" label="Username" label-placement="floating" fill="outline" placeholder="Enter Username"></ion-input><br>
+      <ion-input [(ngModel)]="email" type="email" label="Email" label-placement="floating" fill="outline" placeholder="Enter email"></ion-input><br>
+      
+      <ion-button expand="full" (click)="reset()">Reset Password</ion-button>
+    
+      
+    </ion-card-content>
+    
+  </ion-card>
+
+
+
+</ion-content>

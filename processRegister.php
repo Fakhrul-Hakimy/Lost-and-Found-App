@@ -1,7 +1,23 @@
 <?php
+// Set headers for CORS and JSON response
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *'); // Allow all origins
+header('Access-Control-Allow-Methods: POST, OPTIONS'); // Allow POST and OPTIONS requests
+header('Access-Control-Allow-Headers: Content-Type'); // Allow Content-Type header
 
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit;
+}
+
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Database credentials
 $servername = "localhost";
-$db_username = "root"; // Rename this variable to avoid conflict with the `username` column
+$db_username = "root";
 $db_password = "admin";
 $dbname = "LostFound";
 
@@ -10,37 +26,39 @@ $conn = new mysqli($servername, $db_username, $db_password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    echo json_encode(["success" => false, "message" => "Connection failed: " . $conn->connect_error]);
+    exit;
 }
 
-// Check if any of the fields are empty
-if (empty($_POST['Email']) || empty($_POST['username']) || empty($_POST['password'])) {
-    echo "<script>alert('Error: All fields are required.'); window.location.href = 'register.html';</script>";
-    exit();
+// Get POST data
+$data = json_decode(file_get_contents('php://input'), true);
+
+// Validate input
+if (!isset($data['email']) || !isset($data['username']) || !isset($data['password'])) {
+    echo json_encode(["success" => false, "message" => "All fields are required"]);
+    exit;
 }
 
-// Sanitize and validate input
-$email = $conn->real_escape_string($_POST['Email']);
-$username = $conn->real_escape_string($_POST['username']);
-$password = $conn->real_escape_string($_POST['password']);
+$email = $conn->real_escape_string($data['email']);
+$username = $conn->real_escape_string($data['username']);
+$password = $conn->real_escape_string($data['password']);
 
 // Hash the password
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-// Construct SQL query using prepared statement
+// Prepare SQL query using prepared statements
 $sql = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sss", $email, $username, $hashed_password);
 
-// Execute the query
+// Execute the query and provide feedback
 if ($stmt->execute()) {
-    echo "<script>alert('Registration successful'); window.location.href = 'index.html';</script>";
+    echo json_encode(["success" => true, "message" => "Registration successful"]);
 } else {
-    echo "<script>alert('Error: " . $stmt->error . "'); window.location.href = 'register.html';</script>";
+    echo json_encode(["success" => false, "message" => "Error: " . $stmt->error]);
 }
 
 // Close statement and connection
 $stmt->close();
 $conn->close();
-
 ?>

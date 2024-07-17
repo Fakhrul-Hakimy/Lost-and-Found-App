@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Login
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Login</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Login Details</ion-card-title>
+      <ion-card-subtitle>Please Insert your login details</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-input [(ngModel)]="username" label="Username" label-placement="floating" fill="outline" placeholder="Enter Username"></ion-input><br>
+      <ion-input [(ngModel)]="password" type="password" label="Password" label-placement="floating" fill="outline" placeholder="Enter Password"></ion-input><br>
+      
+      <ion-button expand="full" (click)="login()">Log In</ion-button>
+      
+     
+      
+        <ion-button expand="full" [routerLink]="['/register']">Register</ion-button>
+        <div class="reset-password-container">
+          <a [routerLink]="['/resetpass']">Reset Password</a>
+        </div>
+      
+    </ion-card-content>
+    
+  </ion-card>
+
+
+
+</ion-content>
