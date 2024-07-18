@@ -4,6 +4,7 @@ import { RegisterPage } from './register/register.page';
 import { ResetPage } from './resetpass/resetpass.page';
 import { MainPage } from './main-page/main-page.page';
 import { ChangepassPage } from './changepass/changepass.page';
+import { AddItemPage } from './add-item/add-item.page';
 
 export const routes: Routes = [
   {
@@ -35,4 +36,5 @@ export const routes: Routes = [
     path: 'add-item',
     loadComponent: () => import('./add-item/add-item.page').then( m => m.AddItemPage)
   },
+  
 ];

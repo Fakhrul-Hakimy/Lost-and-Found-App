@@ -1,13 +1,54 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>addItem</ion-title>
+    <ion-title>Add Lost Item</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">addItem</ion-title>
+      <ion-title size="large">Add Lost Item</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Add Lost Item</ion-card-title>
+      <ion-card-subtitle>Add Lost Item Details</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-input [(ngModel)]="itemName" label="Item Name" label-placement="floating" fill="outline" placeholder="Enter Item Name" type="text" name="itemName" id="itemName" required></ion-input>
+
+      <ion-list>
+        <ion-item>
+          <ion-select [(ngModel)]="category" aria-label="Category" placeholder="Select Category" name="category">
+            <ion-select-option value="Electronics">Electronics</ion-select-option>
+            <ion-select-option value="Clothing">Clothing</ion-select-option>
+            <ion-select-option value="Accessories">Accessories</ion-select-option>
+            <ion-select-option value="Documents">Documents</ion-select-option>
+            <ion-select-option value="Personal Items">Personal Items</ion-select-option>
+            <ion-select-option value="Sporting Goods">Sporting Goods</ion-select-option>
+            <ion-select-option value="Toys & Games">Toys & Games</ion-select-option>
+            <ion-select-option value="Tools">Tools</ion-select-option>
+            <ion-select-option value="Medical Items">Medical Items</ion-select-option>
+            <ion-select-option value="Other">Other</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <ion-input [(ngModel)]="description" label="Description" label-placement="floating" fill="outline" placeholder="Enter Description" type="text" name="description" id="description" required></ion-input>
+
+      <ion-datetime [(ngModel)]="dateFound" label="Date Found" label-placement="floating" name="dateFound" id="dateFound" required></ion-datetime>
+
+      <ion-input [(ngModel)]="fname" label="Finder's Name" label-placement="floating" fill="outline" placeholder="Enter Finder's Name" type="text" name="fname" id="fname" required></ion-input>
+
+      <ion-input [(ngModel)]="fcontact" label="Finder's Contact" label-placement="floating" fill="outline" placeholder="Enter Contact Number" type="text" name="fcontact" id="fcontact" required></ion-input>
+
+      <ion-button expand="full" (click)="captureImage()">Capture Image</ion-button>
+      <img *ngIf="imageUrl" [src]="imageUrl" alt="Captured Image" />
+
+      <ion-button expand="full" (click)="addItem()">Add Item</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
