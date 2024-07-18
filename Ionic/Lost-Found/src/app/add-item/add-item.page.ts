@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { HttpClientModule } from '@angular/common/http';
-import { LostItemService } from '../services/lost-item.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Toast } from '@capacitor/toast';
 
 @Component({
   selector: 'app-add-item',
@@ -12,30 +12,33 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   styleUrls: ['./add-item.page.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule, HttpClientModule],
-  providers: [LostItemService]
 })
 export class AddItemPage {
   itemName: string = '';
   category: string = '';
   description: string = '';
-  dateFound: string = '';
+  dateFound: string = ''; // Ensure this is initialized properly
   fname: string = '';
   fcontact: string = '';
-  image: File | null = null;
   imageUrl: string | null = null;
+  imageFile: File | null = null;
 
-  constructor(private lostItemService: LostItemService) {}
+  constructor(private http: HttpClient) {}
 
   async captureImage() {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.DataUrl,
-      source: CameraSource.Prompt // Use Prompt to mimic a prompt to select or capture a media
+      source: CameraSource.Camera,
     });
-  
-    this.imageUrl = image.dataUrl ?? null;
-    this.image = this.dataUrlToFile(image.dataUrl!, 'captured-image.jpg');
+
+    if (image.dataUrl) {
+      this.imageUrl = image.dataUrl;
+      this.imageFile = this.dataUrlToFile(image.dataUrl, 'captured-image.jpg');
+    } else {
+      this.showToast('Failed to capture image. Please try again.');
+    }
   }
 
   dataUrlToFile(dataUrl: string, fileName: string): File {
@@ -53,6 +56,20 @@ export class AddItemPage {
   }
 
   addItem() {
+    // Validate form inputs
+    if (!this.itemName || !this.category || !this.description || !this.dateFound || !this.fname || !this.fcontact || !this.imageUrl) {
+      this.showToast('Please fill in all fields and capture an image.');
+      return;
+    }
+
+    // Convert dateFound to ISO 8601 format
+    try {
+      this.dateFound = new Date(this.dateFound).toISOString();
+    } catch (error) {
+      this.showToast('Invalid date format. Please provide a valid date.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('itemName', this.itemName);
     formData.append('category', this.category);
@@ -60,17 +77,35 @@ export class AddItemPage {
     formData.append('dateFound', this.dateFound);
     formData.append('fname', this.fname);
     formData.append('fcontact', this.fcontact);
-    if (this.image) {
-      formData.append('image', this.image);
+    if (this.imageFile) {
+      formData.append('image', this.imageFile);
     }
 
-    this.lostItemService.addItem(formData).subscribe(
-      (response: any) => {
+    this.http.post<any>('http://192.168.155.169/processItem.php', formData).subscribe(
+      (response) => {
         console.log('Item added successfully:', response);
+        this.showToast('Item added successfully!');
+        // Clear form fields after adding item
+        this.itemName = '';
+        this.category = '';
+        this.description = '';
+        this.dateFound = '';
+        this.fname = '';
+        this.fcontact = '';
+        this.imageUrl = null;
+        this.imageFile = null;
       },
-      (error: any) => {
+      (error) => {
         console.error('Error adding item:', error);
+        this.showToast('Failed to add item. Please try again.');
       }
     );
+  }
+
+  async showToast(message: string) {
+    await Toast.show({
+      text: message,
+      duration: 'short',
+    });
   }
 }

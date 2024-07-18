@@ -57,7 +57,7 @@ export class ChangepassPage {
     await loading.present();
 
     try {
-      const response = await this.http.post<any>('http://localhost/processChangepass.php', loginData).toPromise();
+      const response = await this.http.post<any>('http://192.168.155.169/processChangepass.php', loginData).toPromise();
       if (response.success) {
         this.presentToast('Change Password successful', 'success');
         this.navCtrl.navigateForward('/home');

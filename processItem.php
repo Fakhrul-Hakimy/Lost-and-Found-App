@@ -1,4 +1,9 @@
 <?php
+
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: application/json');
 
 $uploadDir = 'uploads/';
@@ -24,7 +29,7 @@ $allowed = array('jpg', 'jpeg', 'png', 'gif');
 
 if (in_array($imageExt, $allowed)) {
     if ($imageError === 0) {
-        if ($imageSize < 1000000) { // Limit size to 1MB
+        if ($imageSize < 1000000000) { // Limit size to 1MB
             $imageNewName = uniqid('', true) . "." . $imageExt;
             $imageDestination = $uploadDir . $imageNewName;
             if (!move_uploaded_file($imageTmpName, $imageDestination)) {
@@ -57,7 +62,7 @@ if ($conn->connect_error) {
     die(json_encode(["status" => "error", "message" => "Connection failed: " . $conn->connect_error]));
 }
 
-$sql = "INSERT INTO lost_items (item_name, category, description, date_found, finders_name, finders_contact, image_path)
+$sql = "INSERT INTO lost_items (item_name, category, description, date_found, finder_name, finder_contact, image_path)
 VALUES ('$itemName', '$category', '$description', '$dateFound', '$fname', '$fcontact', '$imageDestination')";
 
 if ($conn->query($sql) === TRUE) {
