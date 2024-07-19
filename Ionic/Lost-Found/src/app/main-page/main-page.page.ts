@@ -20,11 +20,13 @@ import { RouterModule } from '@angular/router';
   ],
 })
 export class MainPage implements OnInit {
+  weatherData: any;
 
-  constructor(private navCtrl: NavController) {} // Inject NavController
+  constructor(private navCtrl: NavController, private http: HttpClient) {}
 
   ngOnInit() {
     this.checkLogin();
+    this.loadWeather();
   }
 
   ionViewWillEnter() {
@@ -48,5 +50,12 @@ export class MainPage implements OnInit {
     localStorage.removeItem('username');
     localStorage.removeItem('email');
     this.navCtrl.navigateRoot('/home');
+  }
+
+  loadWeather() {
+    const apiUrl = 'http://api.weatherapi.com/v1/current.json?key=3627c39e0ece47a396b163556242406&q=Sintok&aqi=no';
+    this.http.get(apiUrl).subscribe((data: any) => {
+      this.weatherData = data;
+    });
   }
 }

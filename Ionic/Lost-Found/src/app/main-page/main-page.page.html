@@ -14,6 +14,21 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title>Lost and Found System</ion-card-title>
+      <ion-card *ngIf="weatherData">
+        <ion-card-header>
+          <ion-card-title>Current Weather at Sintok</ion-card-title>
+        </ion-card-header>
+    
+        <ion-card-content>
+          <p>Location: {{ weatherData.location.name }}, {{ weatherData.location.region }}, {{ weatherData.location.country }}</p>
+          <p>Temperature: {{ weatherData.current.temp_c }}°C</p>
+          <p>Feels Like: {{ weatherData.current.feelslike_c }}°C</p>
+          <p>Condition: {{ weatherData.current.condition.text }}</p>
+          
+          <p>Precipitation: {{ weatherData.current.precip_mm }} mm</p>
+          <img [src]="'http:' + weatherData.current.condition.icon" alt="Weather Icon">
+        </ion-card-content>
+      </ion-card>
       <ion-card-subtitle>Main Menu</ion-card-subtitle>
     </ion-card-header>
 
@@ -27,4 +42,6 @@
       <ion-button expand="full" (click)="logout()">Log Out</ion-button>
     </ion-card-content>
   </ion-card>
+
+  
 </ion-content>
