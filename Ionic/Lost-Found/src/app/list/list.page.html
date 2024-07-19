@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Display Items</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of paginatedItems" lines="none" class="item-wrapper">
+      <ion-thumbnail slot="start" class="thumbnail">
+        <img [src]="item.image_path" *ngIf="item.image_path">
+      </ion-thumbnail>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ item.item_name }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Category:</strong> {{ item.category }}</p>
+          <p><strong>Description:</strong> {{ item.description }}</p>
+          <p><strong>Date Found:</strong> {{ item.date_found }}</p>
+          <p><strong>Finder:</strong> {{ item.finder_name }}</p>
+          <p><strong>Contact:</strong> {{ item.finder_contact }}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-buttons slot="end">
+        <ion-button (click)="previousPage()" [disabled]="currentPage === 1">
+          Previous
+        </ion-button>
+        <ion-button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>
