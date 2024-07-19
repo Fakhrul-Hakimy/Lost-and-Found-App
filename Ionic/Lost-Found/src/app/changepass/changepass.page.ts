@@ -25,12 +25,35 @@ export class ChangepassPage {
   username = localStorage.getItem('username');
   email = localStorage.getItem('email');
 
+
+
   constructor(
     private http: HttpClient, 
     private navCtrl: NavController,
     private toastController: ToastController, // Inject ToastController
     private loadingController: LoadingController // Inject LoadingController
   ) {}
+
+  ngOnInit() {
+    this.checkLogin();
+  }
+
+  ionViewWillEnter() {
+    this.checkLogin();
+  }
+
+  checkLogin() {
+    if (!this.isLoggedIn()) {
+      this.navCtrl.navigateRoot('/home');
+    }
+  }
+
+  // Method to check if the user is logged in
+  isLoggedIn(): boolean {
+    const username = localStorage.getItem('username');
+    const email = localStorage.getItem('email');
+    return username !== null && email !== null;
+  }
 
   async changepass() {
     // Basic validation

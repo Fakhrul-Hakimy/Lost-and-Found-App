@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-
+import { NavController } from '@ionic/angular';
 interface Item {
   image_path: string;
   item_name: string;
@@ -27,10 +27,30 @@ export class ListPage implements OnInit {
   totalPages = 1;
   items: Item[] = [];
 
-  constructor(private http: HttpClient) {}
-
+  constructor(private http: HttpClient,private navCtrl: NavController) {}
+  
   ngOnInit() {
+    this.checkLogin();
     this.loadItems();
+  }
+
+
+
+  ionViewWillEnter() {
+    this.checkLogin();
+  }
+
+  checkLogin() {
+    if (!this.isLoggedIn()) {
+      this.navCtrl.navigateRoot('/home');
+    }
+  }
+
+  // Method to check if the user is logged in
+  isLoggedIn(): boolean {
+    const username = localStorage.getItem('username');
+    const email = localStorage.getItem('email');
+    return username !== null && email !== null;
   }
 
   updatePaginatedItems() {

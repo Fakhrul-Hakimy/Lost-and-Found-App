@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Toast } from '@capacitor/toast';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add-item',
@@ -23,7 +24,28 @@ export class AddItemPage {
   imageUrl: string | null = null;
   imageFile: File | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private navCtrl: NavController) {}
+
+  ngOnInit() {
+    this.checkLogin();
+  }
+
+  ionViewWillEnter() {
+    this.checkLogin();
+  }
+
+  checkLogin() {
+    if (!this.isLoggedIn()) {
+      this.navCtrl.navigateRoot('/home');
+    }
+  }
+
+  // Method to check if the user is logged in
+  isLoggedIn(): boolean {
+    const username = localStorage.getItem('username');
+    const email = localStorage.getItem('email');
+    return username !== null && email !== null;
+  }
 
   async captureImage() {
     const image = await Camera.getPhoto({
