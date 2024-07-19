@@ -24,9 +24,6 @@
           <p>Temperature: {{ weatherData.current.temp_c }}°C</p>
           <p>Feels Like: {{ weatherData.current.feelslike_c }}°C</p>
           <p>Condition: {{ weatherData.current.condition.text }}</p>
-          
-          <p>Precipitation: {{ weatherData.current.precip_mm }} mm</p>
-          <img [src]="'http:' + weatherData.current.condition.icon" alt="Weather Icon">
         </ion-card-content>
       </ion-card>
       <ion-card-subtitle>Main Menu</ion-card-subtitle>
