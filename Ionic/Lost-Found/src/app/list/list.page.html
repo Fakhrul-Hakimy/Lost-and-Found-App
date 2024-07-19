@@ -1,6 +1,14 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-page"></ion-back-button>
+    </ion-buttons>
     <ion-title>Display Items</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/main-page">
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
