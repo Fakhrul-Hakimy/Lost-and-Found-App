@@ -39,6 +39,18 @@ export const routes: Routes = [
   {
     path: 'list',
     loadComponent: () => import('./list/list.page').then( m => m.ListPage)
+  },  {
+    path: 'search',
+    loadComponent: () => import('./search/search.page').then( m => m.SearchPage)
   },
+  {
+    path: 'update',
+    loadComponent: () => import('./update/update.page').then( m => m.UpdatePage)
+  },
+  {
+    path: 'delete',
+    loadComponent: () => import('./delete/delete.page').then( m => m.DeletePage)
+  },
+
   
 ];
