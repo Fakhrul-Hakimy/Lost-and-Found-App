@@ -16,6 +16,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+
+
 $sql = "SELECT * FROM lost_items";
 $result = $conn->query($sql);
 
