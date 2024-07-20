@@ -5,6 +5,7 @@ import { ResetPage } from './resetpass/resetpass.page';
 import { MainPage } from './main-page/main-page.page';
 import { ChangepassPage } from './changepass/changepass.page';
 import { AddItemPage } from './add-item/add-item.page';
+import { ListPage } from './list/list.page';
 
 export const routes: Routes = [
   {
@@ -39,7 +40,8 @@ export const routes: Routes = [
   {
     path: 'list',
     loadComponent: () => import('./list/list.page').then( m => m.ListPage)
-  },  {
+  },
+  {
     path: 'search',
     loadComponent: () => import('./search/search.page').then( m => m.SearchPage)
   },
@@ -51,6 +53,5 @@ export const routes: Routes = [
     path: 'delete',
     loadComponent: () => import('./delete/delete.page').then( m => m.DeletePage)
   },
-
   
 ];

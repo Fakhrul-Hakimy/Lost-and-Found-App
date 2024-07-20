@@ -80,7 +80,7 @@ export class ChangepassPage {
     await loading.present();
 
     try {
-      const response = await this.http.post<any>('http://localhost/Lost-and-Found-App/processChangepass.php', loginData).toPromise();
+      const response = await this.http.post<any>('http://localhost/processChangepass.php', loginData).toPromise();
       if (response.success) {
         this.presentToast('Change Password successful', 'success');
         this.navCtrl.navigateForward('/home');

@@ -103,7 +103,7 @@ export class AddItemPage {
       formData.append('image', this.imageFile);
     }
 
-    this.http.post<any>('http://localhost/Lost-and-Found-App/processItem.php', formData).subscribe(
+    this.http.post<any>('http://localhost/processItem.php', formData).subscribe(
       (response) => {
         console.log('Item added successfully:', response);
         this.showToast('Item added successfully!');

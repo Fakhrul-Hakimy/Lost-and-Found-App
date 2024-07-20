@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LostItemService {
-  private apiUrl = 'http://localhost/Lost-and-Found-App/processItem.php';
+  private apiUrl = 'http://localhost/processItem.php';
 
   constructor(private http: HttpClient) { }
 
