@@ -36,7 +36,7 @@ export class HomePage {
     };
 
     try {
-      const response = await this.http.post<any>('http://192.168.155.169/processLogin.php', loginData).toPromise();
+      const response = await this.http.post<any>('http://localhost/Lost-and-Found-App/processLogin.php', loginData).toPromise();
       if (response.success) {
         // Save username and email in localStorage
         localStorage.setItem('username', response.data.username);

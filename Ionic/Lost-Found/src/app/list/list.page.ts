@@ -74,12 +74,12 @@ export class ListPage implements OnInit {
   }
 
   loadItems() {
-    this.http.get<Item[]>('http://192.168.155.169/getItem.php').subscribe(
+    this.http.get<Item[]>('http://localhost/Lost-and-Found-App/getItem.php').subscribe(
       (response) => {
         this.items = response;
         this.items.forEach(item => {
           if (item.image_path) {
-            item.image_path = `http://192.168.155.169/${item.image_path}`;
+            item.image_path = `http://localhost/Lost-and-Found-App/${item.image_path}`;
           }
         });
         this.totalPages = Math.ceil(this.items.length / this.itemsPerPage);

@@ -50,7 +50,7 @@ export class ResetPage {
     await loading.present();
 
     try {
-      const response = await this.http.post<any>('http://192.168.155.169/resetpass.php', loginData).toPromise();
+      const response = await this.http.post<any>('http://localhost/Lost-and-Found-App/resetpass.php', loginData).toPromise();
       if (response.success) {
         this.presentToast('Reset successful', 'success');
         this.navCtrl.navigateForward('/home');
