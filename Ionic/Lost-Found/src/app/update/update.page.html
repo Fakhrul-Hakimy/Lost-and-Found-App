@@ -1,22 +1,68 @@
 <ion-header>
   <ion-toolbar >
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/main-page"></ion-back-button>
     </ion-buttons>
-    <ion-title>Update</ion-title>
+    <ion-title>Update Item</ion-title>
     <ion-buttons slot="end">
-      <ion-button routerLink="/home">
+      <ion-button routerLink="/main-page">
         <ion-icon slot="icon-only" name="home"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">update</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Update Lost Item</ion-card-title>
+      <ion-card-subtitle>Update Lost Item Details</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Item Name</ion-label>
+        <ion-input [(ngModel)]="item.itemName" placeholder="Enter Item Name" type="text" name="itemName" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-select [(ngModel)]="item.category" placeholder="Select Category" name="category">
+          <ion-select-option value="Electronics">Electronics</ion-select-option>
+          <ion-select-option value="Clothing">Clothing</ion-select-option>
+          <ion-select-option value="Accessories">Accessories</ion-select-option>
+          <ion-select-option value="Documents">Documents</ion-select-option>
+          <ion-select-option value="Personal Items">Personal Items</ion-select-option>
+          <ion-select-option value="Sporting Goods">Sporting Goods</ion-select-option>
+          <ion-select-option value="Toys & Games">Toys & Games</ion-select-option>
+          <ion-select-option value="Tools">Tools</ion-select-option>
+          <ion-select-option value="Medical Items">Medical Items</ion-select-option>
+          <ion-select-option value="Other">Other</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea [(ngModel)]="item.description" placeholder="Enter Description" name="description" required></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Date Found</ion-label>
+        <ion-datetime [(ngModel)]="item.dateFound" displayFormat="YYYY-MM-DD" placeholder="Select Date" name="dateFound" required></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Finder's Name</ion-label>
+        <ion-input [(ngModel)]="item.fname" placeholder="Enter Finder's Name" type="text" name="finderName" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Finder's Contact</ion-label>
+        <ion-input [(ngModel)]="item.fcontact" placeholder="Enter Contact Number" type="tel" name="finderContact" required></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" (click)="captureImage()">Capture Image</ion-button>
+      <img *ngIf="imageUrl" [src]="imageUrl" alt="Captured Image" />
+
+      <ion-button expand="full" (click)="updateItem()">Update Item</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
