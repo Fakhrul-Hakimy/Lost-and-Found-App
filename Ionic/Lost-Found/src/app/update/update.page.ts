@@ -23,6 +23,8 @@ export class UpdatePage implements OnInit {
     fname: '',
     fcontact: ''
   };
+  existingItems: any[] = []; // Initialize as empty array
+  isItemSelected = false;
   imageUrl: string | null = null;
   imageFile: File | null = null;
 
@@ -30,10 +32,12 @@ export class UpdatePage implements OnInit {
 
   ngOnInit() {
     this.checkLogin();
+    this.fetchExistingItems();
   }
 
   ionViewWillEnter() {
     this.checkLogin();
+    this.fetchExistingItems();
   }
 
   checkLogin() {
@@ -46,6 +50,67 @@ export class UpdatePage implements OnInit {
     const username = localStorage.getItem('username');
     const email = localStorage.getItem('email');
     return username !== null && email !== null;
+  }
+
+  onItemNameChange(event: any) {
+    const selectedItemId = event.target.value;
+    if (selectedItemId) {
+      this.isItemSelected = true;
+      this.loadItemDetails(selectedItemId);
+    } else {
+      this.isItemSelected = false;
+      this.resetItemDetails();
+    }
+  }
+
+  fetchExistingItems() {
+    this.http.get<any[]>('http://localhost/getItem.php').subscribe(
+      (data) => {
+        console.log('Fetched items:', data); // Log the response data
+        this.existingItems = data.map(item => ({
+          id: item.id,
+          name: item.item_name
+        }));
+        console.log('Processed items:', this.existingItems); // Log the processed items
+      },
+      (error) => {
+        console.error('Error fetching existing items:', error);
+        this.showToast('Failed to fetch existing items. Please try again.');
+      }
+    );
+  }
+
+  loadItemDetails(itemId: string) {
+    this.http.get<any>(`http://localhost/getItem.php?id=${itemId}`).subscribe(
+      (data) => {
+        this.item = {
+          itemName: data.item_name,
+          category: data.category,
+          description: data.description,
+          dateFound: data.date_found,
+          fname: data.finder_name,
+          fcontact: data.finder_contact
+        };
+        this.imageUrl = data.image_path ? `http://localhost/${data.image_path}` : null;
+      },
+      (error) => {
+        console.error('Error fetching item details:', error);
+        this.showToast('Failed to fetch item details. Please try again.');
+      }
+    );
+  }
+
+  resetItemDetails() {
+    this.item = {
+      itemName: '',
+      category: '',
+      description: '',
+      dateFound: '',
+      fname: '',
+      fcontact: ''
+    };
+    this.imageUrl = null;
+    this.imageFile = null;
   }
 
   async captureImage() {
@@ -103,7 +168,7 @@ export class UpdatePage implements OnInit {
       formData.append('image', this.imageFile);
     }
 
-    this.http.post<any>('http://localhost/site/processUpdate.php', formData).subscribe(
+    this.http.post<any>('http://localhost/processUpdate.php', formData).subscribe(
       (response) => {
         console.log('Item updated successfully:', response);
         this.showToast('Item updated successfully!');
