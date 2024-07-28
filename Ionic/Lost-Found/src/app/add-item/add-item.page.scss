@@ -1,0 +1,22 @@
+ion-content {
+   //--background: url('assets/background-image.png') no-repeat center center / cover;
+  }
+  
+  ion-card,
+  ion-card-title,
+  ion-card-subtitle,
+  ion-item {
+    text-align: center;
+  }
+  
+  ion-item {
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --inner-padding-end: 0;
+    --inner-padding-start: 0;
+  }
+  
+  ion-datetime {
+    width: 50%;
+  }
+  
