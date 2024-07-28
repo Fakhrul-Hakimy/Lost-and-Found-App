@@ -1,0 +1,42 @@
+ion-card {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+ion-card-header {
+  text-align: center;
+}
+
+ion-item {
+  margin: 10px 0;
+  position: relative;
+}
+
+ion-label {
+  z-index: 1;
+  background-color: white; /* Adjust if needed to match your theme */
+  padding: 0 5px;
+}
+
+ion-button {
+  margin-top: 20px;
+}
+
+/* Ensure the Date Found label does not overlap with the calendar */
+ion-datetime {
+  width: 50%;
+  position: relative;
+  z-index: 0;
+}
+
+ion-item ion-label {
+  position: absolute;
+  top: -22px; /* Adjust as needed */
+  left: 10px; /* Adjust as needed */
+  background: white;
+  padding: 0 5px;
+  font-size: 0.8em; /* Adjust as needed */
+  color: var(--ion-color-step-700, #8c8c8c); /* Adjust color as needed */
+}
