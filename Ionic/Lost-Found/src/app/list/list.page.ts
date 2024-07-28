@@ -74,12 +74,12 @@ export class ListPage implements OnInit {
   }
 
   loadItems() {
-    this.http.get<Item[]>('http://localhost/site/getItem.php').subscribe(
+    this.http.get<Item[]>('http://localhost/getItem.php').subscribe(
       (response) => {
         this.items = response;
         this.items.forEach(item => {
           if (item.image_path) {
-            item.image_path = `http://localhost/site/${item.image_path}`;
+            item.image_path = `http://localhost/${item.image_path}`;
           }
         });
         this.totalPages = Math.ceil(this.items.length / this.itemsPerPage);
