@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar >
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
@@ -18,4 +18,37 @@
       <ion-title size="large">delete</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-list>
+    <ion-item *ngFor="let item of paginatedItems">
+      <ion-thumbnail slot="start">
+        <img [src]="item.image_path">
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ item.name }}</h2>
+        <p><strong>Category:</strong> {{ item.category }}</p>
+        <p><strong>Description:</strong> {{ item.description }}</p>
+        <p><strong>Date Found:</strong> {{ item.date_found }}</p>
+        <p><strong>Finder:</strong> {{ item.finder }}</p>
+        <p><strong>Contact:</strong> {{ item.contact }}</p>
+      </ion-label>
+      <ion-button color="danger" (click)="deleteItem(item.id)" slot="end">Delete</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="previousPage()" [disabled]="currentPage === 1">
+          Previous
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </ion-button>
+      </ion-buttons>
+      <ion-title>{{currentPage}} / {{totalPages}}</ion-title>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>
