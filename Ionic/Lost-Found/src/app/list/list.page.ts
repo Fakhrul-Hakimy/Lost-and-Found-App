@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { IonicModule, NavController } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
-import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
+import { FormsModule } from '@angular/forms';
 
 interface Item {
   image_path: string;
@@ -22,35 +20,22 @@ interface Item {
   templateUrl: './list.page.html',
   styleUrls: ['./list.page.scss'],
   standalone: true,
-
   imports: [CommonModule, FormsModule, IonicModule, HttpClientModule],
 })
 export class ListPage implements OnInit {
-  items: any[] = [];
-  paginatedItems: any[] = [];
-  selectedItem: any;
-  currentPage: number = 1;
-  itemsPerPage: number = 10;
-  totalPages: number = 0;
+  items: Item[] = [];
+  paginatedItems: Item[] = [];
+  selectedItem: Item | null = null;
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalPages = 1;
+  searchTerm: string = '';
 
   constructor(
     private http: HttpClient,
     private navCtrl: NavController,
     private route: ActivatedRoute
   ) {}
-
-  imports: [CommonModule, IonicModule, HttpClientModule, FormsModule] // Add FormsModule here
-})
-export class ListPage implements OnInit {
-  paginatedItems: Item[] = [];
-  currentPage = 1;
-  itemsPerPage = 10;
-  totalPages = 1;
-  items: Item[] = [];
-  originalItems: Item[] = []; // Store original items
-  searchTerm: string = ''; // Add search term property
-
-  constructor(private http: HttpClient, private navCtrl: NavController) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params: any) => {
@@ -64,9 +49,9 @@ export class ListPage implements OnInit {
   }
 
   fetchItems() {
-    this.http.get<any[]>('http://localhost/getItem.php').subscribe(
+    this.http.get<Item[]>('http://localhost/getItem.php').subscribe(
       (data) => {
-        console.log('Items fetched:', data); // Debugging line
+        console.log('Items fetched:', data); // Check if these fields are present
         this.items = data.map(item => ({
           ...item,
           image_path: `http://localhost/${item.image_path}` // Ensure the path is correct
@@ -79,6 +64,7 @@ export class ListPage implements OnInit {
       }
     );
   }
+  
 
   paginateItems() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -102,7 +88,7 @@ export class ListPage implements OnInit {
   }
 
   loadItemDetails(itemId: string) {
-    this.http.get<any>(`http://localhost/getItem.php?id=${itemId}`).subscribe(
+    this.http.get<Item>(`http://localhost/getItem.php?id=${itemId}`).subscribe(
       (data) => {
         console.log('Item details:', data); // Debugging line
         this.selectedItem = data;
@@ -110,6 +96,13 @@ export class ListPage implements OnInit {
       (error) => {
         console.error('Error fetching item details:', error);
       }
+    );
+  }
+
+  filterItems() {
+    // Implement the filtering logic based on `searchTerm`
+    this.paginatedItems = this.items.filter(item => 
+      item.item_name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 }

@@ -19,7 +19,7 @@ export class UpdatePage implements OnInit {
     itemName: '',
     category: '',
     description: '',
-    dateFound: '',
+    dateFound: '', // Keep this as date format
     fname: '',
     fcontact: ''
   };
@@ -27,6 +27,7 @@ export class UpdatePage implements OnInit {
   isItemSelected = false;
   imageUrl: string | null = null;
   imageFile: File | null = null;
+  selectedItemId: string | null = null;
 
   constructor(private http: HttpClient, private navCtrl: NavController) {}
 
@@ -47,29 +48,47 @@ export class UpdatePage implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    const username = localStorage.getItem('username');
     const email = localStorage.getItem('email');
-    return username !== null && email !== null;
+    return email !== null;
   }
 
   onItemNameChange(event: any) {
-    const selectedItemId = event.target.value;
-    if (selectedItemId) {
+    const selectedItemId = event.detail.value; // Access the selected value from the event
+
+    // Find the selected item from the existingItems array
+    const selectedItem = this.existingItems.find(item => item.id === selectedItemId);
+
+    if (selectedItem) {
+      console.log('Selected item ID:', selectedItemId); // Log the ID for debugging
       this.isItemSelected = true;
-      this.loadItemDetails(selectedItemId);
+      this.selectedItemId = selectedItemId; // Set the selected item ID
+      this.loadItemDetails(selectedItem); // Load details for the selected item
     } else {
+      console.warn('Selected item ID not found in existingItems.');
       this.isItemSelected = false;
       this.resetItemDetails();
     }
   }
 
   fetchExistingItems() {
-    this.http.get<any[]>('http://localhost/getItem.php').subscribe(
+    const email = localStorage.getItem('email');
+    if (!email) {
+      this.showToast('User email not found. Please log in again.');
+      return;
+    }
+
+    this.http.get<any[]>(`http://localhost/getItem2.php?email=${email}`).subscribe(
       (data) => {
         console.log('Fetched items:', data); // Log the response data
         this.existingItems = data.map(item => ({
           id: item.id,
-          name: item.item_name
+          name: item.item_name,
+          category: item.category,
+          description: item.description,
+          date_found: item.date_found, // Ensure date_found is included
+          finder_contact: item.finder_contact,
+          finder_name: item.finder_name,
+          image_path: item.image_path
         }));
         console.log('Processed items:', this.existingItems); // Log the processed items
       },
@@ -80,24 +99,14 @@ export class UpdatePage implements OnInit {
     );
   }
 
-  loadItemDetails(itemId: string) {
-    this.http.get<any>(`http://localhost/getItem.php?id=${itemId}`).subscribe(
-      (data) => {
-        this.item = {
-          itemName: data.item_name,
-          category: data.category,
-          description: data.description,
-          dateFound: data.date_found,
-          fname: data.finder_name,
-          fcontact: data.finder_contact
-        };
-        this.imageUrl = data.image_path ? `http://localhost/${data.image_path}` : null;
-      },
-      (error) => {
-        console.error('Error fetching item details:', error);
-        this.showToast('Failed to fetch item details. Please try again.');
-      }
-    );
+  loadItemDetails(selectedItem: any) {
+    this.item.itemName = selectedItem.name || '';
+    this.item.category = selectedItem.category || '';
+    this.item.description = selectedItem.description || '';
+    this.item.dateFound = selectedItem.date_found || ''; // Use date_found
+    this.item.fname = selectedItem.finder_name || '';
+    this.item.fcontact = selectedItem.finder_contact || '';
+    this.imageUrl = selectedItem.image_path ? `http://localhost:80/${selectedItem.image_path}` : null;
   }
 
   resetItemDetails() {
@@ -105,7 +114,7 @@ export class UpdatePage implements OnInit {
       itemName: '',
       category: '',
       description: '',
-      dateFound: '',
+      dateFound: '', // Use dateFound
       fname: '',
       fcontact: ''
     };
@@ -114,18 +123,23 @@ export class UpdatePage implements OnInit {
   }
 
   async captureImage() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Camera,
-    });
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+      });
 
-    if (image.dataUrl) {
-      this.imageUrl = image.dataUrl;
-      this.imageFile = this.dataUrlToFile(image.dataUrl, 'captured-image.jpg');
-    } else {
-      this.showToast('Failed to capture image. Please try again.');
+      if (image.dataUrl) {
+        this.imageUrl = image.dataUrl;
+        this.imageFile = this.dataUrlToFile(image.dataUrl, 'captured-image.jpg');
+      } else {
+        this.showToast('Failed to capture image. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error capturing image:', error);
+      this.showToast('An error occurred while capturing the image.');
     }
   }
 
@@ -144,26 +158,34 @@ export class UpdatePage implements OnInit {
   }
 
   updateItem() {
-    if (!this.item.itemName || !this.item.category || !this.item.description || !this.item.dateFound || !this.item.fname || !this.item.fcontact || !this.imageUrl) {
-      this.showToast('Please fill in all fields and capture an image.');
+    if (!this.item.itemName || !this.item.category || !this.item.description || !this.item.dateFound || !this.item.fname || !this.item.fcontact) {
+      this.showToast('Please fill in all fields.');
       return;
     }
 
     try {
-      this.item.dateFound = new Date(this.item.dateFound).toISOString();
+      this.item.dateFound = new Date(this.item.dateFound).toISOString().split('T')[0]; // Format as YYYY-MM-DD
     } catch (error) {
       this.showToast('Invalid date format. Please provide a valid date.');
       return;
     }
 
+    const email = localStorage.getItem('email');
+    if (!email) {
+      this.showToast('User email not found. Please log in again.');
+      return;
+    }
+
     const formData = new FormData();
-    formData.append('itemId', '1'); // Replace with actual item ID
+    formData.append('itemId', this.selectedItemId!); // Ensure selectedItemId is not null
     formData.append('itemName', this.item.itemName);
     formData.append('category', this.item.category);
     formData.append('description', this.item.description);
     formData.append('dateFound', this.item.dateFound);
     formData.append('fname', this.item.fname);
     formData.append('fcontact', this.item.fcontact);
+    formData.append('email', email); // Include user email
+
     if (this.imageFile) {
       formData.append('image', this.imageFile);
     }

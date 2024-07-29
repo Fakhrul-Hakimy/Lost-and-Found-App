@@ -53,7 +53,7 @@ export class MainPage implements OnInit {
   }
 
   loadWeather() {
-    const apiUrl = 'http://api.weatherapi.com/v1/current.json?key=3627c39e0ece47a396b163556242406&q=Sintok&aqi=no';
+    const apiUrl = '/api/v1/current.json?key=3627c39e0ece47a396b163556242406&q=Sintok&aqi=no';
     this.http.get(apiUrl).subscribe((data: any) => {
       this.weatherData = data;
     });

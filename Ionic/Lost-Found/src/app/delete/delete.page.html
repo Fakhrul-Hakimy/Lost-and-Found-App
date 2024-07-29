@@ -29,8 +29,8 @@
         <p><strong>Category:</strong> {{ item.category }}</p>
         <p><strong>Description:</strong> {{ item.description }}</p>
         <p><strong>Date Found:</strong> {{ item.date_found }}</p>
-        <p><strong>Finder:</strong> {{ item.finder }}</p>
-        <p><strong>Contact:</strong> {{ item.contact }}</p>
+        <p><strong>Finder:</strong> {{ item.finder_name }}</p>
+        <p><strong>Contact:</strong> {{ item.finder_contact }}</p>
       </ion-label>
       <ion-button color="danger" (click)="deleteItem(item.id)" slot="end">Delete</ion-button>
     </ion-item>

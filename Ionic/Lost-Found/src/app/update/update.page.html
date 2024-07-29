@@ -22,7 +22,7 @@
     <ion-card-content>
       <ion-item>
         <ion-label position="floating">Item Name</ion-label>
-        <ion-select [(ngModel)]="item.itemName" (ionChange)="onItemNameChange($event)">
+        <ion-select [(ngModel)]="selectedItemId" (ionChange)="onItemNameChange($event)">
           <ion-select-option *ngFor="let existingItem of existingItems" [value]="existingItem.id">{{ existingItem.name }}</ion-select-option>
         </ion-select>
       </ion-item>
@@ -53,12 +53,12 @@
 
       <ion-item>
         <ion-label position="floating">Finder's Name</ion-label>
-        <ion-input [(ngModel)]="item.fname" placeholder="Enter Finder's Name" type="text" name="finderName" [disabled]="!isItemSelected" required></ion-input>
+        <ion-input [(ngModel)]="item.fname" placeholder="Enter Finder's Name" type="text" name="finderName" [disabled]="!isItemSelected" readonly></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Finder's Contact</ion-label>
-        <ion-input [(ngModel)]="item.fcontact" placeholder="Enter Contact Number" type="tel" name="finderContact" [disabled]="!isItemSelected" required></ion-input>
+        <ion-input [(ngModel)]="item.fcontact" placeholder="Enter Contact Number" type="tel" name="finderContact" [disabled]="!isItemSelected" readonly></ion-input>
       </ion-item>
 
       <ion-button expand="full" (click)="captureImage()" [disabled]="!isItemSelected">Capture Image</ion-button>
