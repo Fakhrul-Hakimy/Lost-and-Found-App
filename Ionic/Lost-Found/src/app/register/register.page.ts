@@ -38,7 +38,7 @@ export class RegisterPage {
     };
     
     try {
-      const response = await this.http.post<any>('http://localhost/site/processRegister.php', loginData).toPromise();
+      const response = await this.http.post<any>('http://localhost/processRegister.php', loginData).toPromise();
       if (response.success) {
         this.presentToast('Register successful', 'success');
         this.navCtrl.navigateForward('/home');

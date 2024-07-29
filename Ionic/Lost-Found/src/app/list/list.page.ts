@@ -4,12 +4,25 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, NavController } from '@ionic/angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
+
+interface Item {
+  image_path: string;
+  item_name: string;
+  category: string;
+  description: string;
+  date_found: string;
+  finder_name: string;
+  finder_contact: string;
+}
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.page.html',
   styleUrls: ['./list.page.scss'],
   standalone: true,
+
   imports: [CommonModule, FormsModule, IonicModule, HttpClientModule],
 })
 export class ListPage implements OnInit {
@@ -25,6 +38,19 @@ export class ListPage implements OnInit {
     private navCtrl: NavController,
     private route: ActivatedRoute
   ) {}
+
+  imports: [CommonModule, IonicModule, HttpClientModule, FormsModule] // Add FormsModule here
+})
+export class ListPage implements OnInit {
+  paginatedItems: Item[] = [];
+  currentPage = 1;
+  itemsPerPage = 10;
+  totalPages = 1;
+  items: Item[] = [];
+  originalItems: Item[] = []; // Store original items
+  searchTerm: string = ''; // Add search term property
+
+  constructor(private http: HttpClient, private navCtrl: NavController) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params: any) => {

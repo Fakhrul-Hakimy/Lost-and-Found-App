@@ -1,10 +1,27 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Items List</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main-page"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Display Items</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/main-page">
+        <ion-icon slot="icon-only" name="home"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <!-- Search Bar -->
+  <ion-searchbar
+    [(ngModel)]="searchTerm"
+    (ionInput)="filterItems()"
+    placeholder="Search by item name or category"
+  ></ion-searchbar>
+
   <ion-list>
     <ion-item *ngFor="let item of paginatedItems">
       <ion-thumbnail slot="start">
