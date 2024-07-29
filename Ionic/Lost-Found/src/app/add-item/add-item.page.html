@@ -53,12 +53,12 @@
 
       <ion-item>
         <ion-label position="floating">Finder's Name</ion-label>
-        <ion-input [(ngModel)]="fname" placeholder="Enter Finder's Name" type="text" name="finderName" required></ion-input>
+        <ion-input [(ngModel)]="fname" placeholder="Enter Finder's Name" type="text" name="finderName" readonly></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Finder's Contact</ion-label>
-        <ion-input [(ngModel)]="fcontact" placeholder="Enter Contact Number" type="tel" name="finderContact" required></ion-input>
+        <ion-input [(ngModel)]="fcontact" placeholder="Enter Contact Number" type="email" name="finderContact" readonly></ion-input>
       </ion-item>
 
       <ion-button expand="full" (click)="captureImage()">Capture Image</ion-button>

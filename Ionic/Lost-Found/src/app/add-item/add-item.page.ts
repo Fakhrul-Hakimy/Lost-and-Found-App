@@ -37,6 +37,11 @@ export class AddItemPage {
   checkLogin() {
     if (!this.isLoggedIn()) {
       this.navCtrl.navigateRoot('/home');
+    }else{
+      const username = localStorage.getItem('username');
+      const email = localStorage.getItem('email');
+      this.fname = username ? username : '';
+      this.fcontact = email ? email : '';
     }
   }
 
