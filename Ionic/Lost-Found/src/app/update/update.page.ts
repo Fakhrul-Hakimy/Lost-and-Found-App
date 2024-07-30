@@ -77,7 +77,7 @@ export class UpdatePage implements OnInit {
       return;
     }
 
-    this.http.get<any[]>(`http://localhost/getItem2.php?email=${email}`).subscribe(
+    this.http.get<any[]>(`http://192.168.4.169/getItem2.php?email=${email}`).subscribe(
       (data) => {
         console.log('Fetched items:', data); // Log the response data
         this.existingItems = data.map(item => ({
@@ -106,7 +106,7 @@ export class UpdatePage implements OnInit {
     this.item.dateFound = selectedItem.date_found || ''; // Use date_found
     this.item.fname = selectedItem.finder_name || '';
     this.item.fcontact = selectedItem.finder_contact || '';
-    this.imageUrl = selectedItem.image_path ? `http://localhost:80/${selectedItem.image_path}` : null;
+    this.imageUrl = selectedItem.image_path ? `http://192.168.4.169:80/${selectedItem.image_path}` : null;
   }
 
   resetItemDetails() {
@@ -190,7 +190,7 @@ export class UpdatePage implements OnInit {
       formData.append('image', this.imageFile);
     }
 
-    this.http.post<any>('http://localhost/processUpdate.php', formData).subscribe(
+    this.http.post<any>('http://192.168.4.169/processUpdate.php', formData).subscribe(
       (response) => {
         console.log('Item updated successfully:', response);
         this.showToast('Item updated successfully!');

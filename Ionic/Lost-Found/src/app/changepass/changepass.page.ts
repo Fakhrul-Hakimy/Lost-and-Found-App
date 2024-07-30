@@ -80,7 +80,7 @@ export class ChangepassPage {
     await loading.present();
 
     try {
-      const response = await this.http.post<any>('http://learning-fish-ideal.ngrok-free.app/processChangepass.php', loginData).toPromise();
+      const response = await this.http.post<any>('http://192.168.4.169/processChangepass.php', loginData).toPromise();
       if (response.success) {
         this.presentToast('Change Password successful', 'success');
         this.navCtrl.navigateForward('/home');

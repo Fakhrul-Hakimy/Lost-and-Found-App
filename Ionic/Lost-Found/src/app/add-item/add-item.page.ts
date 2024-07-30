@@ -108,7 +108,7 @@ export class AddItemPage {
       formData.append('image', this.imageFile);
     }
 
-    this.http.post<any>('http://learning-fish-ideal.ngrok-free.app/processItem.php', formData).subscribe(
+    this.http.post<any>('http://192.168.4.169/processItem.php', formData).subscribe(
       (response) => {
         console.log('Item added successfully:', response);
         this.showToast('Item added successfully!');
