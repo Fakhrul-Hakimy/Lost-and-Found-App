@@ -39,7 +39,7 @@ export class SearchPage implements OnInit {
       return;
     }
 
-    let url = `http://localhost/searchItems.php?`;
+    let url = `http://learning-fish-ideal.ngrok-free.app/searchItems.php?`;
     if (this.searchName) {
       url += `name=${encodeURIComponent(this.searchName)}`;
     } else if (this.searchCategory) {
@@ -57,7 +57,7 @@ export class SearchPage implements OnInit {
           description: item.description || 'No Description',
           finder_name: item.finder_name || 'No Finder Name',
           finder_contact: item.finder_contact || 'No Finder Contact',
-          image_path: item.image_path ? `http://localhost/${item.image_path}` : null,
+          image_path: item.image_path ? `http://learning-fish-ideal.ngrok-free.app/${item.image_path}` : null,
         }));
         this.message = this.records.length > 0 ? '' : 'No records found.';
       },

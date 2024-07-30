@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LostItemService {
-  private apiUrl = 'http://localhost/processItem.php';
+  private apiUrl = 'http://learning-fish-ideal.ngrok-free.app/processItem.php';
 
   constructor(private http: HttpClient) { }
 

@@ -49,12 +49,12 @@ export class ListPage implements OnInit {
   }
 
   fetchItems() {
-    this.http.get<Item[]>('http://localhost/getItem.php').subscribe(
+    this.http.get<Item[]>('http://learning-fish-ideal.ngrok-free.app/getItem.php').subscribe(
       (data) => {
         console.log('Items fetched:', data); // Check if these fields are present
         this.items = data.map(item => ({
           ...item,
-          image_path: `http://localhost/${item.image_path}` // Ensure the path is correct
+          image_path: `http://learning-fish-ideal.ngrok-free.app/${item.image_path}` // Ensure the path is correct
         }));
         this.totalPages = Math.ceil(this.items.length / this.itemsPerPage);
         this.paginateItems();
@@ -88,7 +88,7 @@ export class ListPage implements OnInit {
   }
 
   loadItemDetails(itemId: string) {
-    this.http.get<Item>(`http://localhost/getItem.php?id=${itemId}`).subscribe(
+    this.http.get<Item>(`http://learning-fish-ideal.ngrok-free.app/getItem.php?id=${itemId}`).subscribe(
       (data) => {
         console.log('Item details:', data); // Debugging line
         this.selectedItem = data;

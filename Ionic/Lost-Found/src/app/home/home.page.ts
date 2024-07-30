@@ -36,7 +36,7 @@ export class HomePage {
     };
 
     try {
-      const response = await this.http.post<any>('http://localhost/processLogin.php', loginData).toPromise();
+      const response = await this.http.post<any>('http://learning-fish-ideal.ngrok-free.app/processLogin.php', loginData).toPromise();
       if (response.success) {
         // Save username and email in localStorage
         localStorage.setItem('username', response.data.username);

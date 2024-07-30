@@ -57,12 +57,12 @@ export class DeletePage implements OnInit {
   
   fetchItems() {
     const email = localStorage.getItem('email');
-    this.http.get<any[]>(`http://localhost/getItem2.php?email=${email}`).subscribe(
+    this.http.get<any[]>(`http://learning-fish-ideal.ngrok-free.app/getItem2.php?email=${email}`).subscribe(
       (data) => {
         console.log('Items fetched:', data); // Debugging line
         this.items = data.map(item => ({
           ...item,
-          image_path: `http://localhost/${item.image_path}` // Ensure the path is correct
+          image_path: `http://learning-fish-ideal.ngrok-free.app/${item.image_path}` // Ensure the path is correct
         }));
         this.totalPages = Math.ceil(this.items.length / this.itemsPerPage);
         this.paginateItems();
@@ -95,7 +95,7 @@ export class DeletePage implements OnInit {
   }
 
   deleteItem(itemId: string) {
-    this.http.post('http://localhost/processDelete.php', { id: itemId }).subscribe(
+    this.http.post('http://learning-fish-ideal.ngrok-free.app/processDelete.php', { id: itemId }).subscribe(
       (response: any) => {
         console.log('Item deleted:', response); // Debugging line
         this.fetchItems();
