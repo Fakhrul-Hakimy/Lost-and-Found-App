@@ -1,0 +1,72 @@
+ion-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .search-fields {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .name-field {
+    flex: 3;
+  }
+  
+  .or-label {
+    flex: 0;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  .category-field {
+    flex: 1;
+  }
+  
+  .card-content {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .card-thumbnail {
+    width: 150px;
+    height: 150px;
+    margin-right: 1rem;
+  }
+  
+  .card-text {
+    flex: 1;
+  }
+  
+  ion-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.5rem 0;
+  }
+  
+  ion-label {
+    font-size: 0.9rem;
+    margin-left: 1rem;
+  }
+  
+  ion-label h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  ion-button {
+    margin-left: auto;
+  }
+  
+  ion-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f8f8f8;
+  }
+  

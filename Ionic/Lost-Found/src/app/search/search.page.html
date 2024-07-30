@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar >
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/main-page"></ion-back-button>
     </ion-buttons>
@@ -12,10 +12,58 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">search</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div class="search-fields">
+    <ion-item class="name-field">
+      <ion-label position="floating">Search by Name</ion-label>
+      <ion-input [(ngModel)]="searchName"></ion-input>
+    </ion-item>
+    <div class="or-label">or</div>
+    <ion-item class="category-field">
+      <ion-label position="floating">Search by Category</ion-label>
+      <ion-select [(ngModel)]="searchCategory">
+        <ion-select-option value="Electronics">Electronics</ion-select-option>
+        <ion-select-option value="Clothing">Clothing</ion-select-option>
+        <ion-select-option value="Accessories">Accessories</ion-select-option>
+        <ion-select-option value="Documents">Documents</ion-select-option>
+        <ion-select-option value="Personal Items">Personal Items</ion-select-option>
+        <ion-select-option value="Sporting Goods">Sporting Goods</ion-select-option>
+        <ion-select-option value="Toys & Games">Toys & Games</ion-select-option>
+        <ion-select-option value="Tools">Tools</ion-select-option>
+        <ion-select-option value="Medical Items">Medical Items</ion-select-option>
+        <ion-select-option value="Other">Other</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+  <ion-button expand="full" (click)="search()">Search</ion-button>
+
+  <ion-text color="danger" *ngIf="message">{{ message }}</ion-text>
+
+  <ion-list *ngIf="records.length > 0">
+    <ion-card *ngFor="let record of records">
+      <ion-card-header>
+        <ion-card-title>{{ record.item_name }}</ion-card-title>
+        <ion-card-subtitle>Category: {{ record.category }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content class="card-content">
+        <ion-thumbnail class="card-thumbnail" *ngIf="record.image_path">
+          <img [src]="record.image_path" alt="{{ record.item_name }}"/>
+        </ion-thumbnail>
+        <div class="card-text">
+          <p><strong>ID:</strong> {{ record.id }}</p>
+          <p><strong>Date Found:</strong> {{ record.date_found }}</p>
+          <p><strong>Description:</strong> {{ record.description }}</p>
+          <p><strong>Finder's Name:</strong> {{ record.finder_name }}</p>
+          <p><strong>Finder's Contact:</strong> {{ record.finder_contact }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
 </ion-content>
