@@ -14,7 +14,13 @@
   <ion-card>
     <ion-card-header>
       <ion-card-title>Lost and Found System</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Show loading message if weather data is not available yet -->
+      <div *ngIf="!weatherData">Loading weather data...</div>
       
+      <!-- Show weather data if it is available -->
       <ion-card *ngIf="weatherData">
         <ion-card-header>
           <ion-card-title>Current Weather at Sintok</ion-card-title>
@@ -27,9 +33,10 @@
           <p>Condition: {{ weatherData.current.condition.text }}</p>
         </ion-card-content>
       </ion-card>
+      
       <ion-card-subtitle>Main Menu</ion-card-subtitle>
-    </ion-card-header>
-
+    </ion-card-content>
+    
     <ion-card-content>
       <ion-button expand="full" [routerLink]="['/add-item']">Add Item</ion-button>
       <ion-button expand="full" [routerLink]="['/delete']">Delete Item</ion-button>
