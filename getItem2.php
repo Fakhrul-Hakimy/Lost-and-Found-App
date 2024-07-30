@@ -6,7 +6,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 $servername = "localhost";
 $db_username = "root";
-$db_password = "admin";
+$db_password = "";
 $dbname = "LostFound";
 
 // Create connection
