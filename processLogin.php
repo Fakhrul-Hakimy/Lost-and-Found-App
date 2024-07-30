@@ -17,7 +17,7 @@ error_reporting(E_ALL);
 // Database credentials
 $servername = "localhost";
 $db_username = "root";
-$db_password = "";
+$db_password = "admin";
 $dbname = "LostFound";
 
 // Create connection

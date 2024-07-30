@@ -14,7 +14,7 @@ error_reporting(E_ALL);
 
 $servername = "localhost";
 $db_username = "root";
-$db_password = "";
+$db_password = "admin";
 $dbname = "LostFound";
 
 $conn = new mysqli($servername, $db_username, $db_password, $dbname);

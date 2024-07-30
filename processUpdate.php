@@ -52,7 +52,7 @@ if (in_array($imageExt, $allowed)) {
 
 $servername = "localhost";
 $db_username = "root";
-$db_password = "";
+$db_password = "admin";
 $dbname = "LostFound";
 
 // Create connection
