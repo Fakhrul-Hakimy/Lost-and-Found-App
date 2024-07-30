@@ -54,9 +54,10 @@ export class DeletePage implements OnInit {
   ngOnInit() {
     this.fetchItems();
   }
-
+  
   fetchItems() {
-    this.http.get<any[]>('http://localhost/getItem.php').subscribe(
+    const email = localStorage.getItem('email');
+    this.http.get<any[]>(`http://localhost/getItem2.php?email=${email}`).subscribe(
       (data) => {
         console.log('Items fetched:', data); // Debugging line
         this.items = data.map(item => ({
