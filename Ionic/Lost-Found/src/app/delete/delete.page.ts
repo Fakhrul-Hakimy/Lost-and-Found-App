@@ -57,12 +57,12 @@ export class DeletePage implements OnInit {
   
   fetchItems() {
     const email = localStorage.getItem('email');
-    this.http.get<any[]>(`http://192.168.4.169/getItem2.php?email=${email}`).subscribe(
+    this.http.get<any[]>(`http://192.168.4.169:80/getItem2.php?email=${email}`).subscribe(
       (data) => {
         console.log('Items fetched:', data); // Debugging line
         this.items = data.map(item => ({
           ...item,
-          image_path: `http://192.168.4.169/${item.image_path}` // Ensure the path is correct
+          image_path: `http://192.168.4.169:80/${item.image_path}` // Ensure the path is correct
         }));
         this.totalPages = Math.ceil(this.items.length / this.itemsPerPage);
         this.paginateItems();
@@ -95,7 +95,7 @@ export class DeletePage implements OnInit {
   }
 
   deleteItem(itemId: string) {
-    this.http.post('http://192.168.4.169/processDelete.php', { id: itemId }).subscribe(
+    this.http.post('http://192.168.4.169:80/processDelete.php', { id: itemId }).subscribe(
       (response: any) => {
         console.log('Item deleted:', response); // Debugging line
         this.fetchItems();

@@ -38,7 +38,7 @@ export class RegisterPage {
     };
     
     try {
-      const response = await this.http.post<any>('http://learning-fish-ideal.ngrok-free.app/processRegister.php', loginData).toPromise();
+      const response = await this.http.post<any>('http://192.168.4.169:80/processRegister.php', loginData).toPromise();
       if (response.success) {
         this.presentToast('Register successful', 'success');
         this.navCtrl.navigateForward('/home');

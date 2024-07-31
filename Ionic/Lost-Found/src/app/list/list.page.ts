@@ -49,12 +49,12 @@ export class ListPage implements OnInit {
   }
 
   fetchItems() {
-    this.http.get<Item[]>('http://192.168.4.169/getItem.php').subscribe(
+    this.http.get<Item[]>('http://192.168.4.169:80/getItem.php').subscribe(
       (data) => {
         console.log('Items fetched:', data); // Check if these fields are present
         this.items = data.map(item => ({
           ...item,
-          image_path: `http://192.168.4.169/${item.image_path}` // Ensure the path is correct
+          image_path: `http://192.168.4.169:80/${item.image_path}` // Ensure the path is correct
         }));
         this.totalPages = Math.ceil(this.items.length / this.itemsPerPage);
         this.paginateItems();

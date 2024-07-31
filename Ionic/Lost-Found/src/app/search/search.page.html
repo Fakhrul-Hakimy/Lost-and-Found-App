@@ -15,17 +15,17 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">search</ion-title>
+      <ion-title size="large">Search</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div class="search-fields">
-    <ion-item class="name-field">
+    <ion-item class="name-field" lines="full">
       <ion-label position="floating">Search by Name</ion-label>
-      <ion-input [(ngModel)]="searchName"></ion-input>
+      <ion-input [(ngModel)]="searchName" clearInput></ion-input>
     </ion-item>
-    <div class="or-label">or</div>
-    <ion-item class="category-field">
+    
+    <ion-item class="category-field" lines="full">
       <ion-label position="floating">Search by Category</ion-label>
       <ion-select [(ngModel)]="searchCategory">
         <ion-select-option value="Electronics">Electronics</ion-select-option>
@@ -44,7 +44,9 @@
 
   <ion-button expand="full" (click)="search()">Search</ion-button>
 
-  <ion-text color="danger" *ngIf="message">{{ message }}</ion-text>
+  <ion-text color="danger" *ngIf="message" class="ion-padding">
+    {{ message }}
+  </ion-text>
 
   <ion-list *ngIf="records.length > 0">
     <ion-card *ngFor="let record of records">
@@ -52,9 +54,9 @@
         <ion-card-title>{{ record.item_name }}</ion-card-title>
         <ion-card-subtitle>Category: {{ record.category }}</ion-card-subtitle>
       </ion-card-header>
-      <ion-card-content class="card-content">
-        <ion-thumbnail class="card-thumbnail" *ngIf="record.image_path">
-          <img [src]="record.image_path" alt="{{ record.item_name }}"/>
+      <ion-card-content>
+        <ion-thumbnail *ngIf="record.image_path">
+          <img [src]="record.image_path" alt="{{ record.item_name }}" />
         </ion-thumbnail>
         <div class="card-text">
           <p><strong>ID:</strong> {{ record.id }}</p>
